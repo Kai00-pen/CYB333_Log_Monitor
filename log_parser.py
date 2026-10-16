@@ -1,6 +1,3 @@
-# CYB333 Security Automation Project
-# Automated Log Monitoring and Alerting System
-# Core Log Parsing
 
 # Function to read the log file
 def read_logs(filename):
@@ -57,6 +54,25 @@ def display_logs(parsed_logs):
         print("-" * 40)
 
 
+# Function to detect failed login attempts
+def detect_failed_logins(parsed_logs):
+    print("\n=== Failed Login Detection ===")
+
+    failed_count = 0
+
+    for log in parsed_logs:
+        if log["status"].strip().lower() == "failed":
+            failed_count += 1
+
+            print("[ALERT] Failed login detected!")
+            print(f"Username: {log['username']}")
+            print(f"IP Address: {log['ip_address']}")
+            print(f"Time: {log['timestamp']}")
+            print("-" * 40)
+
+    print(f"Total failed logins: {failed_count}")
+
+
 # Main program
 def main():
     filename = "sample_logs.txt"
@@ -65,6 +81,7 @@ def main():
     parsed_logs = parse_logs(logs)
 
     display_logs(parsed_logs)
+    detect_failed_logins(parsed_logs)
 
     # Return parsed data so other project components
     # can use it for detection and alerting
